@@ -1,4 +1,3 @@
-from producto import Producto
 def busqueda_binaria(lista:list, id:int):
     start = 0
     finish = len(lista)
