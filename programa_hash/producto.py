@@ -1,18 +1,27 @@
+from persona import Persona
 class Producto:
     __id:int
     __nombre:str
     __precio:int
+    __propietario:Persona
 
-    def __init__(self, id:int, nombre:str='producto', precio:int=0):
+    def __init__(self, id:int, propietario:Persona, nombre:str='producto', precio:int=0):
         self.__id = id
         self.__nombre = nombre
         self.__precio = precio
+        self.__propietario = propietario
     
     def setId(self, id:int):
         self.__id = id
     
     def getId(self):
         return self.__id
+    
+    def setPropietario(self, propietario:Persona):
+        self.__propietario = propietario
+    
+    def getPropietario(self):
+        return self.__propietario
     
     def setNombre(self, nombre:str):
         self.__nombre = nombre
