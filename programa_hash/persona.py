@@ -1,7 +1,7 @@
 class Persona:
     __id:int
     __nombre:str
-    def ___init__(self, id:int, nombre:str):
+    def __init__(self, id:int, nombre:str):
         self.__id = id
         self.__nombre = nombre
     

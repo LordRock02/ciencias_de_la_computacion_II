@@ -1,5 +1,6 @@
 from persona import Persona
 from producto import Producto
+from observador import Observador
 
 class Transaccion:
     __id:int
@@ -47,15 +48,16 @@ class Transaccion:
         return self.__fecha
     
     def getHash(self):
-        hash_resultado = 0
+        self.__hash = ''
         # Iterar sobre cada carácter del texto
-        for caracter in self.__toString():
+        print(f'{self.__id,self.__vendedor.getNombre(),self.__comprador.getNombre(),self.__fecha}')
+        for caracter in f'{self.__id,self.__vendedor.getNombre(),self.__comprador.getNombre(),self.__fecha}':
             # Sumar el valor ASCII de cada carácter al hash
-            hash_resultado += ord(caracter)
+            self.__hash += str(ord(caracter))
         
         # Retorna el hash resultante
         return self.__hash
     
-    def __toString(self):
+    def toString(self):
         return f'id: {self.__id}, producto: {self.__producto.getNombre()}, vendedor: {self.__vendedor.getNombre()}, comprador: {self.__comprador.getNombre()}, fecha: {self.__fecha}'
         

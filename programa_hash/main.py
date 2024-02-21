@@ -1,9 +1,14 @@
 import random
+import time
 import algoritmos_de_busqueda as busqueda
 from producto import Producto
 from transaccion import Transaccion
 from persona import Persona
+from testigo import Testigo
+from portal_transacciones import PortaTransacciones
 from datetime import datetime
+
+portal = PortaTransacciones()
 
 productos = {
     0: "Manzanas",
@@ -28,12 +33,18 @@ productos = {
     19: "Cepillo de dientes"
 }
 
+for i in range(10):
+    testigo = Testigo(i, 'testigo'+str(i))
+    portal.agregarObservador(testigo)
+
 
 persona1 = Persona(1, 'roger')
 persona2 = Persona(2, 'luis')
 
 producto = Producto(1, persona1, nombre = productos[10], precio=500)
-transaccion = Transaccion(producto,persona1,persona2,id=0, fecha=datetime.now())
+transaccion = Transaccion(producto, persona1, persona2, id=0, fecha=time.time())
 print(transaccion.getHash())
+#print(transaccion.getHash(), datetime.now())
+
 
 
