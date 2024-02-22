@@ -4,8 +4,11 @@ from observador import Observador
 class Testigo(Persona, Observador):
 
     def __init__(self, id: int, nombre: str):
-        super().__init__(id, nombre)
+        Persona.__init__(self ,id, nombre)
+        Observador.__init__(self)
 
-    def actualizar(self):
-        '''actualizar tabla hash'''
-        return super().actualizar()
+    def actualizar(self, hashTransacciones):
+        self.setTrasaccionesHash(hashTransacciones)
+        '''for row in self.getTrasaccionesHash():
+            print(row)
+        actualizar tabla hash'''

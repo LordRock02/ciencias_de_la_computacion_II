@@ -1,7 +1,17 @@
 from abc import ABC, abstractmethod
 
 class Observador(ABC):
-    transaccionesHash:list[list]
+    __transaccionesHash:list[list]
+    def __init__(self):
+        self.__transaccionesHash = [[]]
+
     @abstractmethod
-    def actualizar(self, hashTransacciones:list[list]):
+    def actualizar(self, hashTransacciones):
         pass
+    
+    def getTrasaccionesHash(self):
+        return self.__transaccionesHash
+    
+    def setTrasaccionesHash(self, transaccionesHash):
+        self.__transaccionesHash=transaccionesHash
+    

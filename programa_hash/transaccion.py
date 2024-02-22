@@ -50,14 +50,14 @@ class Transaccion:
     def getHash(self):
         self.__hash = ''
         # Iterar sobre cada carácter del texto
-        print(f'{self.__id,self.__vendedor.getNombre(),self.__comprador.getNombre(),self.__fecha}')
-        for caracter in f'{self.__id,self.__vendedor.getNombre(),self.__comprador.getNombre(),self.__fecha}':
+        #print(f'transaccion {self.toString()}')
+        for caracter in self.toString():
             # Sumar el valor ASCII de cada carácter al hash
-            self.__hash += str(ord(caracter))
+            if ord(caracter) != 40 and ord(caracter) != 41:
+                self.__hash += str(ord(caracter))
         
         # Retorna el hash resultante
-        return self.__hash
+        return int(self.__hash)
     
     def toString(self):
-        return f'id: {self.__id}, producto: {self.__producto.getNombre()}, vendedor: {self.__vendedor.getNombre()}, comprador: {self.__comprador.getNombre()}, fecha: {self.__fecha}'
-        
+        return f'{self.__id} {self.__vendedor.getNombre()} {self.__comprador.getNombre()} {self.__producto.getNombre()} {self.__producto.getPrecio()} {self.__fecha}'        

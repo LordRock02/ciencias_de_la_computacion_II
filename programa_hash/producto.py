@@ -2,14 +2,14 @@ from persona import Persona
 class Producto:
     __id:int
     __nombre:str
-    __precio:int
-    __propietario:Persona
+    __precio:float
+    __vendedor:Persona
 
-    def __init__(self, id:int, propietario:Persona, nombre:str='producto', precio:int=0):
+    def __init__(self, id:int, vendedor:Persona, nombre:str='producto', precio:float=0):
         self.__id = id
         self.__nombre = nombre
         self.__precio = precio
-        self.__propietario = propietario
+        self.__vendedor = vendedor
     
     def setId(self, id:int):
         self.__id = id
@@ -17,11 +17,11 @@ class Producto:
     def getId(self):
         return self.__id
     
-    def setPropietario(self, propietario:Persona):
-        self.__propietario = propietario
+    def setVendedor(self, vendedor:Persona):
+        self.__vendedor = vendedor
     
-    def getPropietario(self):
-        return self.__propietario
+    def getVendedor(self):
+        return self.__vendedor
     
     def setNombre(self, nombre:str):
         self.__nombre = nombre
@@ -29,7 +29,7 @@ class Producto:
     def getNombre(self):
         return self.__nombre
     
-    def setPrecio(self, precio:int):
+    def setPrecio(self, precio:float):
         self.__precio = precio
 
     def getPrecio(self):
