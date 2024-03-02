@@ -15,8 +15,9 @@ body{
 }
 #display{
   width: 100%;
+  height: 10vh;
   padding: 20px;
-  font-size: 5rem;
+  font-size: 2rem;
   text-align: left;
   border: none;
   background-color: hsl(0, 0%, 20%);
@@ -24,18 +25,22 @@ body{
 }
 #keys{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(4, 100px); /* 3 columnas de 100px cada una */
+  grid-template-rows: repeat(5, 100px);
+  row-gap: 10px; /* Espacio vertical */
+  column-gap: 5px;
   padding: 25px;
+  justify-items: center;
+  align-items: center;
 }
 button{
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   border-radius: 50px;
   border: none;
   background-color: hsl(0, 0%, 30%);
   color: white;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
 }
