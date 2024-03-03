@@ -7,13 +7,11 @@ import { BinaryTree } from './BinaryTree'
 
 
 function App() {
-  const display = document.getElementById('display')
-  console.log('inicio el programa')
-  let arr = ('4 3 ↑ 6 2 ↑ + 4 5 * + 3 2 ↑ 8 2 / - /'.split(' ')).reverse()
+  const [arr, setArr] = useState(('5 2 ↑ 7 8 + -'.split(' ')).reverse());
   const appendToDisplay = (input) => {
-    const display = document.getElementById('display')
-    const value = display.getAttribute('value') != null? display.getAttribute('value'):''
-    display.setAttribute('value', value + input)
+  const display = document.getElementById('display')
+  const value = display.getAttribute('value') != null? display.getAttribute('value'):''
+  display.setAttribute('value', value + input)
   }
   const clearDisplay = () => {
     const display = document.getElementById('display')
@@ -27,17 +25,16 @@ function App() {
   }
   const setResult = () => {
     const display = document.getElementById('display')
-     let res = evaluate(display.getAttribute('value'))
-     display.setAttribute('value', res)
+    setArr((display.getAttribute('value').split(' ')).reverse())
+    let res = evaluate(display.getAttribute('value'))
+    display.setAttribute('value', res)
   }
-  const createNode = (node, child1, child2) => {
-    return(<Node node={node} child1={child1} child2={child2}></Node>)
-  }
+
   return (
     <>
       <section id='calculadora'>
         <div id='calculator'>
-          <input id='display' readOnly/>
+          <input id='display'/>
           <div id='keys'>
             <button className='operator-btn' onClick={() => appendToDisplay('+')}>+</button>
             <button onClick={() => appendToDisplay('7')}>7</button>
@@ -62,11 +59,7 @@ function App() {
           </div>
         </div>      
       </section>
-      <section className='full-height'>
-        <div id='binary-tree'>
-          <BinaryTree stack={arr}></BinaryTree>
-        </div>
-      </section>
+      <div className='container'><article className="binary-tree" id='tree'><div><BinaryTree stack={arr}></BinaryTree></div></article></div>
     </>
   )
 }

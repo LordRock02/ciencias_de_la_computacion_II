@@ -4,7 +4,8 @@ export function evaluate(inicialInput){
         '-' : 'operator',
         '*' : 'operator',
         '/' : 'operator',
-        '↑' : 'operator'
+        '↑' : 'operator',
+        '^' : 'operator'
     }
     
     let inputStack = inicialInput.split(' ')
@@ -46,6 +47,9 @@ export function evaluate(inicialInput){
                     res = num2 / num1
                     break
                 case '↑':
+                    res = num2 ** num1
+                    break
+                case '^':
                     res = num2 ** num1
                     break
             }

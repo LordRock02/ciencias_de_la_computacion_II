@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 export function Node({node, child1, child2}){
     return(
-        <article className="binary-tree">
-            <div>
-                <span>{node}</span>
-                <div>{child1}</div>
-                <div>{child2}</div>
-            </div>
-        </article>
+        <>
+            <span>{node}</span>
+            <div>{child1}</div>
+            <div>{child2}</div>
+        </>
     )
 }
 export function BinaryTree({stack}){
@@ -16,7 +14,8 @@ export function BinaryTree({stack}){
         '-' : 'operator',
         '*' : 'operator',
         '/' : 'operator',
-        '↑' : 'operator'
+        '↑' : 'operator',
+        '^' : 'operator'
     }
     let arr = stack
     let aux = []
