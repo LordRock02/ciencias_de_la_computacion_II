@@ -96,6 +96,8 @@ button:active{
   display: grid;
   place-items: center;
   margin: 0 auto; /* Centra horizontalmente */
+  background-color: hsl(207, 100%, 55%);
+  color: white;
 }
 
 .binary-tree div > span::before {

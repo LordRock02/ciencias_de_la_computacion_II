@@ -30,5 +30,10 @@ export function BinaryTree({stack}){
             aux.push(<Node node={sym}></Node>)
         }
     }
+    if(aux.length>1){
+        alert('ERRROR')
+        document.getElementById('display').setAttribute('value','')
+        return(<h1><strong>ERROR</strong></h1>)
+    }
     return(aux.pop())
 }
