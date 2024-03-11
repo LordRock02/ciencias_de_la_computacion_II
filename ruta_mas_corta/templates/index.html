@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">>
+</head>
+<body>
+    <div id="map"></div>
+
+    <div>
+        <label for="origen">Origen</label>
+        <select name="origen" id="opcionOrigen">
+            {% for departamento, nodo in municipiosNodo.items() %}
+                <option value="{{departamento}}">{{departamento}}</option>
+            {% endfor %}
+        </select>
+        <label for="destino">destino</label>
+        <select name="destino" id="opcionDestino">
+            {% for departamento, nodo in municipiosNodo.items() %}
+                <option value="{{departamento}}">{{departamento}}</option>
+            {% endfor %}
+        </select>
+        <button onclick="calcular()" id="btn">calcular</button>
+    </div>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYxvjFe0ISNqlmxSwXp0oHIioV4PFk4p0&loading=async&callback=initMap">
+</script>
+<script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
+</body>
+</html>
