@@ -152,25 +152,48 @@ municipiosNodo['Vichada'].setVecinos({
 
 grafo = Grafo(municipiosNodo)
 
-def getRutaDijkstra(origen:str, destino:str):
+def getRutaDijkstra(origen: str, destino: str):
     distanciaDijkstra = grafo.dijkstra(municipiosNodo[origen], municipiosNodo[destino])['distancia']
     rutaDijkstra = []
-    for nodo in grafo.dijkstra(municipiosNodo[origen], municipiosNodo[destino])['ruta']:
-        nodo:Nodo
+    segementosRuta = []
+    nodosRuta:list[Nodo]= grafo.dijkstra(municipiosNodo[origen], municipiosNodo[destino])['ruta']
+    for nodo in nodosRuta:
+        nodo: Nodo
         rutaDijkstra.append(nodo.getMunicipio().getNombre())
+    for i in range(len(nodosRuta)-1):
+        segmento = {
+            'a':[nodosRuta[i].getMunicipio().getLatitud(), nodosRuta[i].getMunicipio().getLongitud()],
+            'b':[nodosRuta[i + 1].getMunicipio().getLatitud(), nodosRuta[i + 1].getMunicipio().getLongitud()]
+        }
+        segementosRuta.append(segmento)
+    print(f'segmentos ruta: {segementosRuta}')
     resultadoDijkstra = {
-        'distancia' : distanciaDijkstra,
-        'ruta' : rutaDijkstra
+        'distancia': distanciaDijkstra,
+        'ruta': rutaDijkstra,
+        'segmentosRuta': segementosRuta
     }
     return resultadoDijkstra
 def getRutaAStar(origen:str, destino:str):
     distanciaAStar = grafo.A_star(municipiosNodo[origen], municipiosNodo[destino])['distancia']
     rutaAStar = []
-    for nodo in grafo.A_star(municipiosNodo[origen], municipiosNodo[destino])['ruta']:
+    segementosRuta = []
+    nodosRuta:list[Nodo] = grafo.A_star(municipiosNodo[origen], municipiosNodo[destino])['ruta']
+    for nodo in nodosRuta:
         nodo:Nodo
         rutaAStar.append(nodo.getMunicipio().getNombre())
+    for i in range(len(nodosRuta)-1):
+        segmento = {
+            'a':[nodosRuta[i].getMunicipio().getLatitud(), nodosRuta[i].getMunicipio().getLongitud()],
+            'b':[nodosRuta[i + 1].getMunicipio().getLatitud(), nodosRuta[i + 1].getMunicipio().getLongitud()]
+        }
+        segementosRuta.append(segmento)
+    print(f'segmentos ruta: {segementosRuta}')
     resultadoAStar = {
         'distancia' : distanciaAStar,
-        'ruta' : rutaAStar
+        'ruta' : rutaAStar,
+        'segmentosRuta' : segementosRuta
     }
     return resultadoAStar
+
+
+

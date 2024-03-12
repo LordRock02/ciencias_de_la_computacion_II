@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <body>
     <div id="map"></div>
@@ -22,11 +23,16 @@
                 <option value="{{departamento}}">{{departamento}}</option>
             {% endfor %}
         </select>
+        <select name="algoritmo" id="opcionAlgoritmo">
+            <option value="Dijkstra">Algoritmo Dijkstra</option>
+            <option value="A*">Algoritmo A*</option>
+        </select>
         <button onclick="calcular()" id="btn">calcular</button>
     </div>
-    <script async
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!--<script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYxvjFe0ISNqlmxSwXp0oHIioV4PFk4p0&loading=async&callback=initMap">
-</script>
+</script>-->
 <script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
 </body>
 </html>
