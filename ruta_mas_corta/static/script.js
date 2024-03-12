@@ -1,6 +1,7 @@
 const opcionOrigen = document.getElementById('opcionOrigen')
 const opcionDestino = document.getElementById('opcionDestino')
 const opcionAlgoritmo = document.getElementById('opcionAlgoritmo')
+const divResultado = document.getElementById('resultado')
 
 let coordenadasIniciales
 /*let map;
@@ -27,7 +28,7 @@ const cargarCoordenadas = async () => {
 };
 
 
-var map = L.map('map').setView([4.6482783,-74.2729636], 6);
+var map = L.map('map').setView([4.6482783,-74.2729636], 5);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -53,7 +54,7 @@ const setMarcadores = async (map) => {
         for (let vecino in coordenadas.vecinos) {
           if (coordenadas.vecinos.hasOwnProperty(vecino)) {
             let coordenadasV = coordenadas.vecinos[vecino];
-            var polyline = L.polyline([[coordenadas.latitud, coordenadas.longitud], [coordenadasV.latitud, coordenadasV.longitud]], {color:'black'}).addTo(map);
+            var polyline = L.polyline([[coordenadas.latitud, coordenadas.longitud], [coordenadasV.latitud, coordenadasV.longitud]], {color:'green'}).addTo(map);
           }
         }
       }
@@ -71,6 +72,10 @@ const dibujarRuta = (map, arr) => {
       var polyline = L.polyline([segmento.a, segmento.b], {color:'red'}).addTo(map)
     });
     //var polyline = L.polyline([[6.244197, -75.6637852], [5.454516, -73.362031]], {color:'red'}).addTo(map)
+}
+
+const setResultado = (distancia, ruta) => {
+  divResultado.innerHTML = `<div><h1>distancia : ${distancia}</h1></div><div><h1>ruta: ${ruta}</h1></div>`
 }
 
 
@@ -95,5 +100,6 @@ const calcular = () => {
         console.log(`${segmento.a}, ${segmento.b}`)
       })
       dibujarRuta(map, data.segmentosRuta)
+      setResultado(data.distancia, data.ruta)
     })
 }

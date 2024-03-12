@@ -141,7 +141,7 @@ municipiosNodo['Santander'].setVecinos({
 municipiosNodo['Vaupes'].setVecinos({
     municipiosNodo['Amazonas']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Amazonas'].getMunicipio()),
     municipiosNodo['Guainia']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Guainia'].getMunicipio()),
-    municipiosNodo['La Guajira']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['La Guajira'].getMunicipio())
+    #['La Guajira']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['La Guajira'].getMunicipio())
 })
 
 municipiosNodo['Vichada'].setVecinos({
@@ -166,7 +166,6 @@ def getRutaDijkstra(origen: str, destino: str):
             'b':[nodosRuta[i + 1].getMunicipio().getLatitud(), nodosRuta[i + 1].getMunicipio().getLongitud()]
         }
         segementosRuta.append(segmento)
-    print(f'segmentos ruta: {segementosRuta}')
     resultadoDijkstra = {
         'distancia': distanciaDijkstra,
         'ruta': rutaDijkstra,
@@ -187,7 +186,6 @@ def getRutaAStar(origen:str, destino:str):
             'b':[nodosRuta[i + 1].getMunicipio().getLatitud(), nodosRuta[i + 1].getMunicipio().getLongitud()]
         }
         segementosRuta.append(segmento)
-    print(f'segmentos ruta: {segementosRuta}')
     resultadoAStar = {
         'distancia' : distanciaAStar,
         'ruta' : rutaAStar,
