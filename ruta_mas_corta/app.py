@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from nodo import Nodo
 from grafoMunicipios import *
-import json
 
 app = Flask(__name__)
 
@@ -29,13 +28,13 @@ def getCoordenadas():
     return coordenadas
 
 @app.route('/calcular-ruta/<origen>/<destino>/<algoritmo>', methods=['POST'])
-def calcularRuta(origen, destino, algoritmo):
+def calcularRuta(origen:str, destino:str, algoritmo:str):
     resultado = None
     if algoritmo == 'Dijkstra':
         resultado = getRutaDijkstra(origen, destino)
     elif algoritmo == 'A*':
         resultado = getRutaAStar(origen, destino)
-    return json.dumps(resultado)
+    return resultado
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,12 +3,17 @@ from municipio import Municipio
 import math
 
 def getDistancia(origen:Municipio, destino:Municipio):
-    theta = origen.getLongitud() - destino.getLongitud()
-    distancia = 60 * 1.1515 * (180/math.pi) * math.acos(
-        math.sin(origen.getLatitud() * (math.pi/180)) * math.sin(destino.getLatitud() * (math.pi/180)) + 
-        math.cos(origen.getLatitud() * (math.pi/180)) * math.cos(destino.getLatitud() * (math.pi/180)) *
-        math.cos(theta * (math.pi/180))
-    )
+    distancia:float = 0
+    try:
+        theta = origen.getLongitud() - destino.getLongitud()
+        distancia = 60 * 1.1515 * (180/math.pi) * math.acos(
+            math.sin(origen.getLatitud() * (math.pi/180)) * math.sin(destino.getLatitud() * (math.pi/180)) + 
+            math.cos(origen.getLatitud() * (math.pi/180)) * math.cos(destino.getLatitud() * (math.pi/180)) *
+            math.cos(theta * (math.pi/180))
+        )
+    except ValueError as error:
+        print(f'errror origen:{origen.getNombre()}, destino: {destino.getNombre()}')
+
     return distancia*1.609344
 
 class Grafo:

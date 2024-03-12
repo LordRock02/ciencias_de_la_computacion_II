@@ -3,19 +3,6 @@ const opcionDestino = document.getElementById('opcionDestino')
 const opcionAlgoritmo = document.getElementById('opcionAlgoritmo')
 const divResultado = document.getElementById('resultado')
 
-let coordenadasIniciales
-/*let map;
-
-async function initMap() {
-  const { Map } = await google.maps.importLibrary("maps");
-
-  map = new Map(document.getElementById("map"), {
-    center: { lat: 10.759581, lng: -74.776339 },
-    zoom: 8,
-  });
-}*/
-//cargar coordenadas
-
 const cargarCoordenadas = async () => {
   try {
     const response = await fetch('/get-coordenadas', { method: 'POST' });
@@ -43,7 +30,7 @@ const limpiarMapa = (map) => {
 }
 
 const setMarcadores = async (map) => {
-  coordenadasIniciales = await cargarCoordenadas();
+  let coordenadasIniciales = await cargarCoordenadas();
   if (coordenadasIniciales) {
     console.log('Coordenadas iniciales:', coordenadasIniciales);
     for (let dep in coordenadasIniciales) {

@@ -1,17 +1,6 @@
 from nodo import Nodo
 from municipio import Municipio
-from grafo import Grafo
-import math
-
-def getDistancia(origen:Municipio, destino:Municipio):
-    theta = origen.getLongitud() - destino.getLongitud()
-    distancia = 60*1.1515*(180/math.pi)*math.acos(
-        math.sin(origen.getLatitud() * (math.pi/180)) * math.sin(destino.getLatitud() * (math.pi/180)) + 
-        math.cos(origen.getLatitud() * (math.pi/180)) * math.cos(destino.getLatitud() * (math.pi/180)) *
-        math.cos(theta * (math.pi/180))
-    )
-    return distancia*1.609344
-
+from grafo import *
 
 municipiosNodo = {
     'Amazonas': Nodo(Municipio(1,'Amazonas', -4.2031647, -69.9630985)),
@@ -141,7 +130,6 @@ municipiosNodo['Santander'].setVecinos({
 municipiosNodo['Vaupes'].setVecinos({
     municipiosNodo['Amazonas']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Amazonas'].getMunicipio()),
     municipiosNodo['Guainia']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Guainia'].getMunicipio()),
-    #['La Guajira']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['La Guajira'].getMunicipio())
 })
 
 municipiosNodo['Vichada'].setVecinos({
