@@ -1,25 +1,24 @@
 from nodo import Nodo
 from municipio import Municipio
-import math
-
-def getDistancia(origen:Municipio, destino:Municipio):
-    distancia:float = 0
-    try:
-        theta = origen.getLongitud() - destino.getLongitud()
-        distancia = 60 * 1.1515 * (180/math.pi) * math.acos(
-            math.sin(origen.getLatitud() * (math.pi/180)) * math.sin(destino.getLatitud() * (math.pi/180)) + 
-            math.cos(origen.getLatitud() * (math.pi/180)) * math.cos(destino.getLatitud() * (math.pi/180)) *
-            math.cos(theta * (math.pi/180))
-        )
-    except ValueError as error:
-        print(f'errror origen:{origen.getNombre()}, destino: {destino.getNombre()}')
-
-    return distancia*1.609344
+from municipio import getDistancia
 
 class Grafo:
-    
-    def __init__(self, nodos={}):
+    __nodos:dict[str,Nodo]
+    def __init__(self, nodos:dict[str,Nodo]={}):
         self.__nodos = nodos
+
+    def setNodos(self, nodos:dict[str,Nodo]):
+        self.__nodos = nodos
+
+    def getNodos(self):
+        return self.__nodos
+    
+    def setVecinosNodo(self, nodoMunicipio:str, *vecinosMunicipio:str):
+        nodo:Nodo = self.__nodos[nodoMunicipio]
+        vecino:Nodo
+        for vecinoMunicipio in vecinosMunicipio:
+            vecino = self.__nodos[vecinoMunicipio]
+            nodo.addVecino(vecino)
 
     #funcion para escoger el siguiente nodo con el menor peso posible
     def getNodoPesoMenor(self, pesos, visitados):
