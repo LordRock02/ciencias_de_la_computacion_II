@@ -25,120 +25,28 @@ municipiosNodo = {
     'Vichada': Nodo(Municipio(20, 'Vichada', 5.303792, -68.110226))
 }
 
-
-municipiosNodo['Amazonas'].setVecinos({
-    municipiosNodo['Caqueta']: getDistancia(municipiosNodo['Amazonas'].getMunicipio(), municipiosNodo['Caqueta'].getMunicipio()),
-    municipiosNodo['Vaupes']: getDistancia(municipiosNodo['Amazonas'].getMunicipio(), municipiosNodo['Vaupes'].getMunicipio()),
-})
-
-municipiosNodo['Antioquia'].setVecinos({
-    municipiosNodo['Bolivar']: getDistancia(municipiosNodo['Antioquia'].getMunicipio(), municipiosNodo['Bolivar'].getMunicipio()),
-    municipiosNodo['Boyaca']: getDistancia(municipiosNodo['Antioquia'].getMunicipio(), municipiosNodo['Boyaca'].getMunicipio()),
-    municipiosNodo['Choco']: getDistancia(municipiosNodo['Antioquia'].getMunicipio(), municipiosNodo['Choco'].getMunicipio()),
-    municipiosNodo['Santander']: getDistancia(municipiosNodo['Antioquia'].getMunicipio(), municipiosNodo['Santander'].getMunicipio())
-})
-
-municipiosNodo['Arauca'].setVecinos({
-    municipiosNodo['Casanare']: getDistancia(municipiosNodo['Arauca'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio()),
-    municipiosNodo['Boyaca']: getDistancia(municipiosNodo['Arauca'].getMunicipio(), municipiosNodo['Boyaca'].getMunicipio()),
-    municipiosNodo['Vichada']: getDistancia(municipiosNodo['Arauca'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio())
-})
-
-municipiosNodo['Bolivar'].setVecinos({
-    municipiosNodo['Antioquia']: getDistancia(municipiosNodo['Bolivar'].getMunicipio(), municipiosNodo['Antioquia'].getMunicipio()),
-    municipiosNodo['Magdalena']: getDistancia(municipiosNodo['Bolivar'].getMunicipio(), municipiosNodo['Magdalena'].getMunicipio())
-})
-
-municipiosNodo['Boyaca'].setVecinos({
-    municipiosNodo['Antioquia']: getDistancia(municipiosNodo['Boyaca'].getMunicipio(), municipiosNodo['Antioquia'].getMunicipio()),
-    municipiosNodo['Arauca']: getDistancia(municipiosNodo['Boyaca'].getMunicipio(), municipiosNodo['Arauca'].getMunicipio()),
-    municipiosNodo['Casanare']: getDistancia(municipiosNodo['Boyaca'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio()),
-    municipiosNodo['Cundinamarca']: getDistancia(municipiosNodo['Boyaca'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio()),
-    municipiosNodo['Santander']: getDistancia(municipiosNodo['Boyaca'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio())
-})
-
-municipiosNodo['Caqueta'].setVecinos({
-    municipiosNodo['Amazonas']: getDistancia(municipiosNodo['Caqueta'].getMunicipio(), municipiosNodo['Amazonas'].getMunicipio()),
-    municipiosNodo['Huila']: getDistancia(municipiosNodo['Caqueta'].getMunicipio(), municipiosNodo['Huila'].getMunicipio()),
-    municipiosNodo['Meta']: getDistancia(municipiosNodo['Caqueta'].getMunicipio(), municipiosNodo['Meta'].getMunicipio())
-})
-
-municipiosNodo['Casanare'].setVecinos({
-    municipiosNodo['Arauca']: getDistancia(municipiosNodo['Casanare'].getMunicipio(), municipiosNodo['Arauca'].getMunicipio()),
-    municipiosNodo['Boyaca']: getDistancia(municipiosNodo['Casanare'].getMunicipio(), municipiosNodo['Boyaca'].getMunicipio()),
-    municipiosNodo['Meta']: getDistancia(municipiosNodo['Casanare'].getMunicipio(), municipiosNodo['Meta'].getMunicipio()),
-    municipiosNodo['Vichada']: getDistancia(municipiosNodo['Casanare'].getMunicipio(), municipiosNodo['Vichada'].getMunicipio())
-})
-
-municipiosNodo['Cauca'].setVecinos({
-    municipiosNodo['Nariño']: getDistancia(municipiosNodo['Cauca'].getMunicipio(), municipiosNodo['Nariño'].getMunicipio()),
-    municipiosNodo['Huila']: getDistancia(municipiosNodo['Cauca'].getMunicipio(), municipiosNodo['Huila'].getMunicipio())
-})
-
-municipiosNodo['Choco'].setVecinos({
-    municipiosNodo['Antioquia']: getDistancia(municipiosNodo['Choco'].getMunicipio(), municipiosNodo['Antioquia'].getMunicipio())
-})
-
-municipiosNodo['Cundinamarca'].setVecinos({
-    municipiosNodo['Boyaca']: getDistancia(municipiosNodo['Cundinamarca'].getMunicipio(), municipiosNodo['Boyaca'].getMunicipio()),
-    municipiosNodo['Meta']: getDistancia(municipiosNodo['Cundinamarca'].getMunicipio(), municipiosNodo['Meta'].getMunicipio()),
-    municipiosNodo['Huila']: getDistancia(municipiosNodo['Cundinamarca'].getMunicipio(), municipiosNodo['Huila'].getMunicipio())
-})
-
-municipiosNodo['Guainia'].setVecinos({
-    municipiosNodo['Vichada']: getDistancia(municipiosNodo['Guainia'].getMunicipio(), municipiosNodo['Vichada'].getMunicipio()),
-    municipiosNodo['Vaupes']: getDistancia(municipiosNodo['Guainia'].getMunicipio(), municipiosNodo['Vaupes'].getMunicipio())
-})
-
-municipiosNodo['Huila'].setVecinos({
-    municipiosNodo['Caqueta']: getDistancia(municipiosNodo['Huila'].getMunicipio(), municipiosNodo['Caqueta'].getMunicipio()),
-    municipiosNodo['Cauca']: getDistancia(municipiosNodo['Huila'].getMunicipio(), municipiosNodo['Cauca'].getMunicipio()),
-    municipiosNodo['Meta']: getDistancia(municipiosNodo['Huila'].getMunicipio(), municipiosNodo['Meta'].getMunicipio()),
-    municipiosNodo['Cundinamarca']: getDistancia(municipiosNodo['Huila'].getMunicipio(), municipiosNodo['Cundinamarca'].getMunicipio())
-})
-
-municipiosNodo['La Guajira'].setVecinos({
-    municipiosNodo['Magdalena']: getDistancia(municipiosNodo['La Guajira'].getMunicipio(), municipiosNodo['Magdalena'].getMunicipio())
-})
-
-municipiosNodo['Magdalena'].setVecinos({
-    municipiosNodo['Bolivar']: getDistancia(municipiosNodo['Magdalena'].getMunicipio(), municipiosNodo['Bolivar'].getMunicipio()),
-    municipiosNodo['La Guajira']: getDistancia(municipiosNodo['Magdalena'].getMunicipio(), municipiosNodo['La Guajira'].getMunicipio())
-})
-
-municipiosNodo['Meta'].setVecinos({
-    municipiosNodo['Casanare']: getDistancia(municipiosNodo['Meta'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio()),
-    municipiosNodo['Caqueta']: getDistancia(municipiosNodo['Meta'].getMunicipio(), municipiosNodo['Caqueta'].getMunicipio()),
-    municipiosNodo['Cundinamarca']: getDistancia(municipiosNodo['Meta'].getMunicipio(), municipiosNodo['Cundinamarca'].getMunicipio()),
-    municipiosNodo['Huila']: getDistancia(municipiosNodo['Meta'].getMunicipio(), municipiosNodo['Huila'].getMunicipio())
-})
-
-municipiosNodo['Nariño'].setVecinos({
-    municipiosNodo['Cauca']: getDistancia(municipiosNodo['Nariño'].getMunicipio(), municipiosNodo['Cauca'].getMunicipio())
-})
-
-municipiosNodo['Norte de Santander'].setVecinos({
-    municipiosNodo['Santander']: getDistancia(municipiosNodo['Norte de Santander'].getMunicipio(), municipiosNodo['Santander'].getMunicipio())
-})
-
-municipiosNodo['Santander'].setVecinos({
-    municipiosNodo['Norte de Santander']: getDistancia(municipiosNodo['Santander'].getMunicipio(), municipiosNodo['Norte de Santander'].getMunicipio()),
-    municipiosNodo['Boyaca']: getDistancia(municipiosNodo['Santander'].getMunicipio(), municipiosNodo['Boyaca'].getMunicipio()),
-    municipiosNodo['Antioquia']: getDistancia(municipiosNodo['Santander'].getMunicipio(), municipiosNodo['Antioquia'].getMunicipio())
-})
-
-municipiosNodo['Vaupes'].setVecinos({
-    municipiosNodo['Amazonas']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Amazonas'].getMunicipio()),
-    municipiosNodo['Guainia']: getDistancia(municipiosNodo['Vaupes'].getMunicipio(), municipiosNodo['Guainia'].getMunicipio()),
-})
-
-municipiosNodo['Vichada'].setVecinos({
-    municipiosNodo['Arauca']: getDistancia(municipiosNodo['Vichada'].getMunicipio(), municipiosNodo['Arauca'].getMunicipio()),
-    municipiosNodo['Casanare']: getDistancia(municipiosNodo['Vichada'].getMunicipio(), municipiosNodo['Casanare'].getMunicipio()),
-    municipiosNodo['Guainia']: getDistancia(municipiosNodo['Vichada'].getMunicipio(), municipiosNodo['Guainia'].getMunicipio())
-})
-
 grafo = Grafo(municipiosNodo)
+
+grafo.setVecinosNodo('Amazonas', 'Caqueta', 'Vaupes')
+grafo.setVecinosNodo('Antioquia', 'Bolivar', 'Boyaca', 'Choco', 'Santander')
+grafo.setVecinosNodo('Arauca', 'Casanare', 'Boyaca', 'Vichada')
+grafo.setVecinosNodo('Bolivar', 'Antioquia', 'Magdalena')
+grafo.setVecinosNodo('Boyaca', 'Antioquia', 'Arauca', 'Casanare', 'Cundinamarca', 'Santander')
+grafo.setVecinosNodo('Caqueta', 'Amazonas', 'Huila', 'Meta')
+grafo.setVecinosNodo('Casanare', 'Arauca', 'Boyaca', 'Meta', 'Vichada')
+grafo.setVecinosNodo('Cauca', 'Nariño', 'Huila')
+grafo.setVecinosNodo('Choco', 'Antioquia')
+grafo.setVecinosNodo('Cundinamarca', 'Boyaca', 'Meta', 'Huila')
+grafo.setVecinosNodo('Guainia', 'Vichada', 'Vaupes')
+grafo.setVecinosNodo('Huila', 'Caqueta', 'Cauca', 'Meta', 'Cundinamarca')
+grafo.setVecinosNodo('La Guajira', 'Magdalena')
+grafo.setVecinosNodo('Magdalena', 'Bolivar', 'La Guajira')
+grafo.setVecinosNodo('Meta', 'Casanare', 'Caqueta', 'Cundinamarca', 'Huila')
+grafo.setVecinosNodo('Nariño', 'Cauca')
+grafo.setVecinosNodo('Norte de Santander', 'Santander')
+grafo.setVecinosNodo('Santander', 'Norte de Santander', 'Boyaca', 'Antioquia')
+grafo.setVecinosNodo('Vaupes', 'Amazonas', 'Guainia')
+grafo.setVecinosNodo('Vichada', 'Arauca', 'Casanare', 'Guainia')
 
 def getRutaDijkstra(origen: str, destino: str):
     distanciaDijkstra = grafo.dijkstra(municipiosNodo[origen], municipiosNodo[destino])['distancia']

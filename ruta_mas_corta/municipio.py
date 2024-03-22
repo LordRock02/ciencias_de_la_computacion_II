@@ -1,3 +1,4 @@
+import math
 class Municipio:
     def __init__(self, id=0, nombre='', latitud=0, longitud=0):
         self.__nombre = nombre
@@ -28,3 +29,17 @@ class Municipio:
 
     def setId(self, id):
         self.__id = id
+
+def getDistancia(origen:Municipio, destino:Municipio):
+    distancia:float = 0
+    try:
+        theta = origen.getLongitud() - destino.getLongitud()
+        distancia = 60 * 1.1515 * (180/math.pi) * math.acos(
+            math.sin(origen.getLatitud() * (math.pi/180)) * math.sin(destino.getLatitud() * (math.pi/180)) + 
+            math.cos(origen.getLatitud() * (math.pi/180)) * math.cos(destino.getLatitud() * (math.pi/180)) *
+            math.cos(theta * (math.pi/180))
+        )
+    except ValueError as error:
+        print(f'errror origen:{origen.getNombre()}, destino: {destino.getNombre()}')
+
+    return distancia*1.609344
