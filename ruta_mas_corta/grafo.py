@@ -1,11 +1,14 @@
 from nodo import Nodo
 from municipio import Municipio
 from municipio import getDistancia
+import copy
 
 class Grafo:
     __nodos:dict[str,Nodo]
+    __edges:list[dict[float,list[Nodo]]] = []
     def __init__(self, nodos:dict[str,Nodo]={}):
         self.__nodos = nodos
+        self.__edges = []
 
     def setNodos(self, nodos:dict[str,Nodo]):
         self.__nodos = nodos
@@ -13,22 +16,42 @@ class Grafo:
     def getNodos(self):
         return self.__nodos
     
+    def getListaNodos(self):
+        listaNodos:list[Nodo] = []
+        for municipio, nodo in self.getNodos().items():
+            listaNodos.append(nodo)
+        return listaNodos
+    
+    def getEdges(self):
+        return self.__edges
+    
+    def addEdge(self, nodo1:Nodo, nodo2:Nodo, distancia:float):
+        if {distancia:[nodo1,nodo2]} not in self.__edges and {distancia:[nodo2,nodo1]} not in self.__edges:
+            self.__edges.append({distancia:[nodo1,nodo2]})
+            #print(f'la cantidad de aristas es : {len(self.__edges)}')
+
+    def sortEdges(self):
+        self.__edges = sorted(self.__edges, key=lambda x: list(x.keys())[0])
+    
     def setVecinosNodo(self, nodoMunicipio:str, *vecinosMunicipio:str):
         nodo:Nodo = self.__nodos[nodoMunicipio]
         vecino:Nodo
         for vecinoMunicipio in vecinosMunicipio:
             vecino = self.__nodos[vecinoMunicipio]
             nodo.addVecino(vecino)
+            self.addEdge(nodo, vecino, nodo.getPesoVecino(vecino))
+            #self.addEdge(nodo.getMunicipio().getNombre(), vecino.getMunicipio().getNombre(), nodo.getPesoVecino(vecino))
+        #print(len(self.__edges))
 
     #funcion para escoger el siguiente nodo con el menor peso posible
-    def getNodoPesoMenor(self, pesos, visitados):
+    def getNodoPesoMenor(self, vecinos:dict[Nodo,float], visitados):
         nodoPesoMenor:Nodo = None
-        for nodo, peso in pesos.items():
+        for nodo, peso in vecinos.items():
             if peso != float('inf'):
                 if nodo not in visitados:#filtra por los nodos que no han sido visitados
                     if nodoPesoMenor is None:
                         nodoPesoMenor = nodo
-                    if peso < pesos[nodoPesoMenor]:
+                    if peso < vecinos[nodoPesoMenor]:
                         nodoPesoMenor = nodo
         return nodoPesoMenor
 
@@ -61,8 +84,6 @@ class Grafo:
                             nodoAnt[n] = nodo#se establece nodo como nuevo antecesor de su nodo vecino
             visitados.append(nodo)
             nodo = self.getNodoPesoMenor(pesos,visitados)#se escoge siguiente nodo
-        '''for nodo, peso in pesos.items():
-            print(f'destino: {nodo.getMunicipio().getNombre()}\tdistancia: {peso}')'''
         rutaOptima = [nodoDestino]
         nodo = nodoAnt[nodoDestino]
         while(nodo):
@@ -116,8 +137,81 @@ class Grafo:
         }
 
         return resultado
-                        
-                        
+    
+    def bellman_Ford(self, nodoInicio:Nodo, nodoDestino:Nodo){
         
-        
-        
+    }
+    
+    def Kruskal(self):
+        nodos:dict[str,Nodo] = copy.deepcopy(self.__nodos)
+        #print(f'copia: {nodos["Amazonas"].getVecinos()} - Original: {self.__nodos["Amazonas"].getVecinos()}')
+        spanningTree:'Grafo'
+        #se vacian los pesos del grafo
+        for municipio, nodo in nodos.items():
+            nodos[municipio].setVecinos({})
+        spanningTree = Grafo(nodos)
+        self.sortEdges()
+        for edge in self.__edges:
+            for peso, listaNodos in edge.items():
+                if not self.verificarCiclo(listaNodos[0].getMunicipio().getNombre(), listaNodos[1].getMunicipio().getNombre(), spanningTree):
+                    spanningTree.setVecinosNodo(listaNodos[0].getMunicipio().getNombre(), listaNodos[1].getMunicipio().getNombre())
+                    spanningTree.setVecinosNodo(listaNodos[1].getMunicipio().getNombre(), listaNodos[0].getMunicipio().getNombre())
+                    print(spanningTree.getNodos()[listaNodos[0].getMunicipio().getNombre()])
+        return spanningTree.getNodos()
+    
+    def prim(self, nodoInicial:Nodo):
+        nodos:dict[str,Nodo] = copy.deepcopy(self.__nodos)#copia grafo original
+        spanningTree:'Grafo'
+        for municipio, nodo in nodos.items():#se vacian los vecinos del grafo
+            nodos[municipio].setVecinos({})
+        spanningTree = Grafo(nodos)
+        noVisitados:list[Nodo] = self.getListaNodos()
+        noVisitados.remove(nodoInicial)
+        nodosVisitados:list[Nodo] = []
+        nodo1:Nodo = nodoInicial
+        nodo2:Nodo = self.getNodoPesoMenor(nodo1.getVecinos(), nodosVisitados)
+        while noVisitados:
+            if nodo1 not in nodosVisitados:
+                nodosVisitados.append(nodo1)
+            municipio1 = nodo1.getMunicipio().getNombre()
+            municipio2 = nodo2.getMunicipio().getNombre()
+            if not self.verificarCiclo(spanningTree.getNodos()[municipio1].getMunicipio().getNombre(), spanningTree.getNodos()[municipio2].getMunicipio().getNombre(), spanningTree):#verifica si hay ciclo
+                spanningTree.setVecinosNodo(municipio1, municipio2)
+                spanningTree.setVecinosNodo(municipio2, municipio1)
+                noVisitados.remove(nodo2)
+                if nodo2 not in nodosVisitados:
+                    nodosVisitados.append(nodo2)
+            nodo1 = None
+            for nodo in nodosVisitados:
+                if nodo1 is None:
+                    if self.getNodoPesoMenor(nodo.getVecinos(), nodosVisitados) is not None:#verifica que los vecinos de nodo sean validos
+                        nodo1 = nodo
+                        nodo2 = self.getNodoPesoMenor(nodo1.getVecinos(), nodosVisitados)
+                else:
+                    if self.getNodoPesoMenor(nodo.getVecinos(), nodosVisitados) != None and self.getNodoPesoMenor(nodo1.getVecinos(), nodosVisitados) != None:#verifica cada uno de los vecinos si son validos o no
+                        peso1 = nodo.getPesoVecino(self.getNodoPesoMenor(nodo.getVecinos(), nodosVisitados))
+                        peso2 = nodo1.getPesoVecino(self.getNodoPesoMenor(nodo1.getVecinos(), nodosVisitados))
+                        if peso1 < peso2:
+                            nodo1 = nodo
+                            nodo2 = self.getNodoPesoMenor(nodo.getVecinos(), nodosVisitados)
+        return spanningTree.getNodos()
+    
+    def verificarCiclo(self, municipio1:str, municipio2:str, grafo:'Grafo'):
+        nodo1:Nodo = grafo.getNodos()[municipio1]
+        nodo2:Nodo = grafo.getNodos()[municipio2]
+        nodosProcesados:list[Nodo] = []
+        pilaVecinos:list[Nodo] = [nodo1]
+        while pilaVecinos:
+            nodo:Nodo = pilaVecinos.pop()
+            if nodo != nodo2:
+                print(f'nodo: {nodo.getMunicipio().getNombre()}')
+                for vecino, peso in nodo.getVecinos().items():
+                    if vecino not in nodosProcesados:
+                        nodosProcesados.append(nodo)
+                        pilaVecinos.append(vecino)
+            else:
+                print('hay Ciclo')
+                return True
+            print('no hay ciclo')
+        return False
+    

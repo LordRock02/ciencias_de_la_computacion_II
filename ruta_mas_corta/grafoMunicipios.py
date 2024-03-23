@@ -47,6 +47,13 @@ grafo.setVecinosNodo('Norte de Santander', 'Santander')
 grafo.setVecinosNodo('Santander', 'Norte de Santander', 'Boyaca', 'Antioquia')
 grafo.setVecinosNodo('Vaupes', 'Amazonas', 'Guainia')
 grafo.setVecinosNodo('Vichada', 'Arauca', 'Casanare', 'Guainia')
+'''print('=====')
+print('EDGES:')
+print('=====')
+grafo.sortEdges()
+print(len(grafo.getEdges()))
+for edge in grafo.getEdges():
+    print(edge)'''
 
 def getRutaDijkstra(origen: str, destino: str):
     distanciaDijkstra = grafo.dijkstra(municipiosNodo[origen], municipiosNodo[destino])['distancia']
@@ -90,4 +97,20 @@ def getRutaAStar(origen:str, destino:str):
     return resultadoAStar
 
 
-
+def cargarCordenadas(nodos:dict[str,Nodo]):
+    coordenadas = {}
+    for dep, nodo in nodos.items():
+        nodo:Nodo
+        vecinos = {}
+        for vecino, dist in nodo.getVecinos().items():
+            vecino:Nodo
+            vecinos[vecino.getMunicipio().getNombre()] = {
+                'latitud':vecino.getMunicipio().getLatitud(),
+                'longitud':vecino.getMunicipio().getLongitud()
+            }
+        coordenadas[dep] = {
+            'latitud':nodo.getMunicipio().getLatitud(),
+            'longitud':nodo.getMunicipio().getLongitud(),
+            'vecinos':vecinos
+        }
+    return coordenadas

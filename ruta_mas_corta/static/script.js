@@ -2,11 +2,14 @@ const opcionOrigen = document.getElementById('opcionOrigen')
 const opcionDestino = document.getElementById('opcionDestino')
 const opcionAlgoritmo = document.getElementById('opcionAlgoritmo')
 const divResultado = document.getElementById('resultado')
+const nodosInicialesEndPoint = `/get-coordenadas`
 
-const cargarCoordenadas = async () => {
+const cargarNodos = async (ENDPOINT) => {
   try {
-    const response = await fetch('/get-coordenadas', { method: 'POST' });
+    const response = await fetch(ENDPOINT, { method: 'POST' });
     const data = await response.json();
+    console.log(ENDPOINT)
+    console.log(data)
     return data;
   } catch (error) {
     console.error('Error al cargar las coordenadas:', error);
@@ -15,7 +18,7 @@ const cargarCoordenadas = async () => {
 };
 
 
-var map = L.map('map').setView([4.6482783,-74.2729636], 5);
+const map = L.map('map').setView([4.6482783,-74.2729636], 5);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -29,34 +32,53 @@ const limpiarMapa = (map) => {
   })
 }
 
-const setMarcadores = async (map) => {
-  let coordenadasIniciales = await cargarCoordenadas();
-  if (coordenadasIniciales) {
-    console.log('Coordenadas iniciales:', coordenadasIniciales);
-    for (let dep in coordenadasIniciales) {
-      if (coordenadasIniciales.hasOwnProperty(dep)) {
-        let coordenadas = coordenadasIniciales[dep];
-        console.log(`dep: ${dep} coordenadas: ${coordenadas.latitud}, ${coordenadas.longitud}`);
+const setMarcadores = (map, nodos) => {
+  if (nodos) {
+    for (let dep in nodos) {
+      if (nodos.hasOwnProperty(dep)) {
+        let coordenadas = nodos[dep];
         L.marker([coordenadas.latitud, coordenadas.longitud]).addTo(map);
+      }
+    }
+  }
+}
+
+const dibujarAristas = (map, nodos, parameters = null) => {
+  if(nodos){
+    for (let dep in nodos) {
+      if (nodos.hasOwnProperty(dep)) {
+        let coordenadas = nodos[dep];
         for (let vecino in coordenadas.vecinos) {
           if (coordenadas.vecinos.hasOwnProperty(vecino)) {
             let coordenadasV = coordenadas.vecinos[vecino];
-            var polyline = L.polyline([[coordenadas.latitud, coordenadas.longitud], [coordenadasV.latitud, coordenadasV.longitud]], {color:'green'}).addTo(map);
+            if(!parameters){
+              var polyline = L.polyline([[coordenadas.latitud, coordenadas.longitud], [coordenadasV.latitud, coordenadasV.longitud]], {color:'green'}).addTo(map);
+            }else{
+              var polyline = L.polyline([[coordenadas.latitud, coordenadas.longitud], [coordenadasV.latitud, coordenadasV.longitud]], parameters).addTo(map);
+            }
           }
         }
       }
     }
-  } else {
-    console.log('No se pudieron cargar las coordenadas.');
-    return {};
   }
+}
+
+const dibujarGrafoInicial = async (map) => {
+  let nodos = await cargarNodos(nodosInicialesEndPoint)
+  setMarcadores(map, nodos)
+  dibujarAristas(map, nodos)
+}
+
+const dibujarSpanningTree = async (map, ENDPOINT) => {
+  let nodos = await cargarNodos(ENDPOINT)
+  dibujarAristas(map, nodos, parameters={color:'rgba(0, 0, 255, 0.3)', weight: 15})
 }
 
 const dibujarRuta = (map, arr) => {
   //setMarcadores(map)
     arr.forEach(segmento => {
       console.log(`${segmento.a}, ${segmento.b}`)
-      var polyline = L.polyline([segmento.a, segmento.b], {color:'red'}).addTo(map)
+      var polyline = L.polyline([segmento.a, segmento.b], {color:'rgba(255, 0, 0, 0.5)', weight: 10}).addTo(map)
     });
     //var polyline = L.polyline([[6.244197, -75.6637852], [5.454516, -73.362031]], {color:'red'}).addTo(map)
 }
@@ -66,17 +88,18 @@ const setResultado = (distancia, ruta) => {
 }
 
 
-setMarcadores(map);
+dibujarGrafoInicial(map)
 
 
 const calcular = () => { 
   limpiarMapa(map)
-  setMarcadores(map)
+  dibujarGrafoInicial(map)
   const origen = opcionOrigen.value
   const destino = opcionDestino.value
   const algoritmo = opcionAlgoritmo.value
   console.log(`origen: ${origen} destino: ${destino}`)
-  fetch(`/calcular-ruta/${origen}/${destino}/${algoritmo}`, {method: 'POST'})
+  if (algoritmo == 'Dijkstra' || algoritmo == 'A*'){
+    fetch(`/calcular-ruta/${origen}/${destino}/${algoritmo}`, {method: 'POST'})
     .then(response => {
       return response.json()
     })
@@ -89,4 +112,13 @@ const calcular = () => {
       dibujarRuta(map, data.segmentosRuta)
       setResultado(data.distancia, data.ruta)
     })
+  }else{
+    const origen = opcionOrigen.value
+    if(algoritmo == 'Kruskal'){
+      dibujarSpanningTree(map, `/spanning-tree/${algoritmo}/${null}`)
+    }else{
+      dibujarSpanningTree(map, `/spanning-tree/${algoritmo}/${origen}`)
+    }
+    
+  }
 }
