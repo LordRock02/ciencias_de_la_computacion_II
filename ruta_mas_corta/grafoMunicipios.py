@@ -96,6 +96,26 @@ def getRutaAStar(origen:str, destino:str):
     }
     return resultadoAStar
 
+def getRutaBellmanFord(origen: str, destino: str):
+    distanciaBellmanFord = grafo.bellman_Ford(municipiosNodo[origen], municipiosNodo[destino])['distancia']
+    rutaBellmanFord = []
+    segementosRuta = []
+    nodosRuta:list[Nodo]= grafo.bellman_Ford(municipiosNodo[origen], municipiosNodo[destino])['ruta']
+    for nodo in nodosRuta:
+        nodo: Nodo
+        rutaBellmanFord .append(nodo.getMunicipio().getNombre())
+    for i in range(len(nodosRuta)-1):
+        segmento = {
+            'a':[nodosRuta[i].getMunicipio().getLatitud(), nodosRuta[i].getMunicipio().getLongitud()],
+            'b':[nodosRuta[i + 1].getMunicipio().getLatitud(), nodosRuta[i + 1].getMunicipio().getLongitud()]
+        }
+        segementosRuta.append(segmento)
+    resultadoBellmanFord  = {
+        'distancia': distanciaBellmanFord ,
+        'ruta': rutaBellmanFord ,
+        'segmentosRuta': segementosRuta
+    }
+    return resultadoBellmanFord 
 
 def cargarCordenadas(nodos:dict[str,Nodo]):
     coordenadas = {}

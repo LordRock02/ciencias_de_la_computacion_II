@@ -138,9 +138,49 @@ class Grafo:
 
         return resultado
     
-    def bellman_Ford(self, nodoInicio:Nodo, nodoDestino:Nodo){
+    def bellman_Ford(self, nodoInicio:Nodo, nodoDestino:Nodo):
+        pesos = {}#diccionario de pesos
+        nodoAnt = {#diccionario de los nodos anteriores
+            nodoInicio:None
+        }
+        #visitados = []#lista de nodos visitados
+        for clave, nodo in self.__nodos.items():
+            if nodo != nodoInicio:
+                pesos[nodo] = float('inf')
+            else:
+                pesos[nodo] = 0
         
-    }
+        edges:list = self.__edges.copy()
+        for edge in edges:
+            for dist, nodos in dict(edge).items():
+                if nodos:
+                    edges.append({dist: nodos.reverse()})
+        edges = sorted(edges, key=lambda x: list(x.keys())[0])
+        nodo:Nodo = nodoInicio
+
+        for _ in range(len(self.getListaNodos()) -1):
+            for edge in edges:
+                for dist, nodos in dict(edge).items():
+                    if nodos:
+                        nodos:list[Nodo]
+                        if pesos[nodos[0]] != float('inf') and pesos[nodos[0]] + dist < pesos[nodos[1]]:
+                            pesos[nodos[1]] = pesos[nodos[0]] + dist
+                            nodoAnt[nodos[1]] = nodos[0]
+        rutaOptima = [nodoDestino]
+        nodo = nodoAnt[nodoDestino]
+
+        while(nodo):
+            rutaOptima.append(nodo)#se llena ruta optima con todos los antecesores de nodoDEstino
+            nodo = nodoAnt[nodo]
+
+        rutaOptima.reverse()#reversa ruta
+
+        resultado = {
+            'distancia' : pesos[nodoDestino],
+            'ruta' : rutaOptima
+        }
+        print(nodoAnt)
+        return resultado
     
     def Kruskal(self):
         nodos:dict[str,Nodo] = copy.deepcopy(self.__nodos)

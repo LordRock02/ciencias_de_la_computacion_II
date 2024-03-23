@@ -20,7 +20,7 @@ def calcularRutaEndPoint(origen:str, destino:str, algoritmo:str):
     elif algoritmo == 'A*':
         resultado = getRutaAStar(origen, destino)
     elif algoritmo == 'Bellman-Ford':
-        pass
+        resultado = getRutaBellmanFord(origen, destino)
     return resultado
 
 @app.route('/spanning-tree/<algoritmo>/<nodoInicial>', methods=['POST'])

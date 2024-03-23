@@ -98,7 +98,7 @@ const calcular = () => {
   const destino = opcionDestino.value
   const algoritmo = opcionAlgoritmo.value
   console.log(`origen: ${origen} destino: ${destino}`)
-  if (algoritmo == 'Dijkstra' || algoritmo == 'A*'){
+  if (algoritmo == 'Dijkstra' || algoritmo == 'A*' || algoritmo == 'Bellman-Ford'){
     fetch(`/calcular-ruta/${origen}/${destino}/${algoritmo}`, {method: 'POST'})
     .then(response => {
       return response.json()
