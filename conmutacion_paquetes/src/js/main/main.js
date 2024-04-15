@@ -1,25 +1,20 @@
 import Grafo from "../models/grafo.js";
 import Nodo from "../models/nodo.js";
-import { grafo_condorcet } from "../controllers/grafocondorcet.js";
+import { dibujaGrafo } from "../controllers/dibujaGrafo.js";
 import Controller from "../controllers/controller.js";
 import View from "../views/view.js";
 
 
-function dibuja(grafo = null) {
-  var canvas = grafo_condorcet('grafo', grafo);
-}
-
-
 const nodos = [
-  new Nodo(1),
-  new Nodo(2),
+  new Nodo(1, 'borde'),
+  new Nodo(2, 'borde'),
   new Nodo(3),
   new Nodo(4),
   new Nodo(5),
   new Nodo(6),
   new Nodo(7),
   new Nodo(8),
-  new Nodo(9)
+  new Nodo(9, 'borde')
 ]
 
 const grafo = new Grafo(nodos)
@@ -34,6 +29,3 @@ grafo.agregarVecinosNodo(6, { 7: 4, 8: 2, 9: 5 })
 grafo.agregarVecinosNodo(9, { 8: 6, 7: 8 })
 
 const controller = new Controller(grafo, view)
-
-console.log(grafo)
-dibuja(grafo)

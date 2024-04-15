@@ -1,9 +1,8 @@
 import Nodo from "../models/nodo.js"
 import Grafo from "../models/grafo.js"
-export function grafo_condorcet(id, grafo) {
+export function dibujaGrafo(canvas, grafo) {
 
-	let canvas = document.getElementById(id),
-		ancho = canvas.width,
+	let ancho = canvas.width,
 		alto = canvas.height,
 		radionodo = 20
 
@@ -59,18 +58,25 @@ export function grafo_condorcet(id, grafo) {
 		return coordenadasNodos
 	}
 
-	let dibuja_nodo = function (centro, etiqueta) {
+	let dibuja_nodo = function (centro, id) {
 		let radio = radionodo
 		canvas.beginPath()
 		canvas.arc(centro.x, centro.y, radio, 0, 2 * Math.PI, false)
 		canvas.lineWidth = 2
-		canvas.strokeStyle = "#f00"
+		
+		if(grafo instanceof Grafo){
+			if(grafo.obtenerNodo(id).tipo == 1){
+				canvas.strokeStyle = "#f00" 
+			}else{
+				canvas.strokeStyle = "0CE81C"
+			}
+		}
 		canvas.stroke()
 		canvas.font = parseInt(radio) + 'px Arial'
-		canvas.fillText(etiqueta, centro.x - (radio / 3), centro.y + (radio / 3))
+		canvas.fillText(id, centro.x - (radio / 3), centro.y + (radio / 3))
 	}
 
-	let dibuja_arista = function (origen, destino, etiqueta) {
+	let dibuja_arista = function (origen, destino, id) {
 
 		let angulo = Math.atan2(destino.y - origen.y, destino.x - origen.x),
 			origen_x = origen.x + radionodo * Math.cos(angulo),
@@ -84,14 +90,14 @@ export function grafo_condorcet(id, grafo) {
 		canvas.strokeStyle = "#f00"
 		canvas.stroke()
 		canvas.font = parseInt(radionodo / 1.5) + 'px Arial'
-		canvas.fillText(etiqueta, (destino_x + origen_x) / 2, (destino_y + origen_y) / 2)
+		canvas.fillText(id, (destino_x + origen_x) / 2, (destino_y + origen_y) / 2)
 	}
 	let num_nodos = 0
 	if (grafo instanceof Grafo) {
 		num_nodos = grafo.nodos.length
 	}
 
-	console.log(`numero de nodos ${num_nodos}`)
+	//console.log(`numero de nodos ${num_nodos}`)
 	let vertices = posicion_nodos(num_nodos)
 
 	//Borramos el dibujo anterior
@@ -99,7 +105,7 @@ export function grafo_condorcet(id, grafo) {
 	if (grafo instanceof Grafo) {
 		for (let nodo of grafo.nodos) {
 			if (nodo instanceof Nodo) {
-				console.log(`coordenadas nodo ${nodo.id}: ${vertices[nodo.id].x}, ${vertices[nodo.id].y}`)
+				//console.log(`coordenadas nodo ${nodo.id}: ${vertices[nodo.id].x}, ${vertices[nodo.id].y}`)
 				dibuja_nodo(vertices[nodo.id], nodo.id)
 				for (let vecinoId in nodo.vecinos) {
 					dibuja_arista(vertices[nodo.id], vertices[vecinoId], nodo.vecinos[vecinoId])

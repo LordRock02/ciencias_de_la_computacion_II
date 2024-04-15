@@ -39,4 +39,61 @@ export default class Grafo {
             }
         }
     }
+
+    actualizarAristas() {
+        //console.log('actualizar aristas')
+        let aristasVisitadas = []
+        for (let nodo of this._nodos) {
+            if (nodo instanceof Nodo) {
+                let vecinos = nodo.vecinos
+                nodo.vecinos = {}
+                for (let idVecino in vecinos) {
+                    if (!aristasVisitadas.some(([id1, id2]) => id1 === idVecino && id2 === nodo.id)) {
+                        let vecino = this.obtenerNodo(idVecino)
+                        if (nodo.tipo == 1 || vecino.tipo == 1) {
+                            vecinos[idVecino] = Math.floor(Math.random() * (30 - 10)) + 10
+                        }
+                        else {
+                            vecinos[idVecino] = Math.floor(Math.random() * (120 - 80)) + 80
+                        }
+                        aristasVisitadas.push([nodo.id, idVecino])
+                    } else {
+                        delete vecinos[idVecino]
+                    }
+                }
+                this.agregarVecinosNodo(nodo.id, vecinos)
+            }
+        }
+    }
+
+    enviarVecino(idOrigen, idDestino) {
+        if (idOrigen != idDestino) {
+            let origen = this.obtenerNodo(idOrigen)
+            let vecino = null
+            let costoMinimo = Infinity
+            let costoAcumulado = 0
+            costoAcumulado = origen.paquete.costo
+            for (let vecinoId in origen.vecinos) {
+                let costo = costoAcumulado + (1 / origen.vecinos[vecinoId])
+                if (costoMinimo > costo || vecinoId == idDestino) {
+                    costoMinimo = costo
+                    vecino = vecinoId
+                    console.log(`vecino ${vecino}`)
+                    if(vecinoId == idDestino){
+                        break
+                    }
+                }
+            }
+            if (vecino == idDestino) {
+                console.log('se termino')
+            }
+            origen.paquete.recorrido.push(vecino)
+            origen.paquete.costo = costoMinimo
+            vecino = this.obtenerNodo(vecino)
+            vecino.paquete = origen.paquete
+            origen.paquete = {}
+            return vecino.id
+        }
+        return null
+    }
 }
