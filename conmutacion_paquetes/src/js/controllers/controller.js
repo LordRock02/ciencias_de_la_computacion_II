@@ -2,7 +2,7 @@ import Grafo from "../models/grafo.js";
 import View from "../views/view.js";
 import { dibujaGrafo } from "./dibujaGrafo.js";
 
-const limitePaquete = 1
+const limitePaquete = 3
 const delayEntrada = 1500
 const delayEnvio = 2000
 let contador = 0
@@ -17,7 +17,7 @@ const dividirPaquete = (mensaje) => {
         for (let i = 0, index = 0; i < mensaje.length; i += limitePaquete, index++) {
             paquetes.push({ 'index': index, 'contenido': mensaje.slice(i, i + limitePaquete), 'recorrido': [], 'costo': 0 })
         }
-        console.log(`funcion dividirPaquete: ${JSON.stringify(paquetes, null, 2)}`)
+        //console.log(`funcion dividirPaquete: ${JSON.stringify(paquetes, null, 2)}`)
         return paquetes
     }
     return null
@@ -61,30 +61,39 @@ export default class Controller {
         }
     }
     async enviarMensaje() {
+        console.log('enviar mensaje')
         let idOrigen = 1
         let idDestino = 9
-        let paquetes = dividirPaquete(this.view.inputMessage.value.split(''))
-        for (let paquete of paquetes) {
-            let nodo = this.grafo.obtenerNodo(idOrigen)
-            paquete.recorrido.push(idOrigen)
-            nodo.paquete = paquete
-            this.renderTable(paquete.contenido, idOrigen, paquete.recorrido)
-            this.enviarPaquete(idOrigen, idDestino)
-            await sleep(delayEntrada)
-        }
+        let nodo = this.grafo.obtenerNodo(idOrigen)
+        nodo.queue = dividirPaquete(this.view.inputMessage.value.split(''))
+        this.enviarPaquete(idOrigen, idDestino)
+        // let paquetes = dividirPaquete(this.view.inputMessage.value.split(''))
+        // for (let paquete of paquetes) {
+        //     let nodo = this.grafo.obtenerNodo(idOrigen)
+        //     paquete.recorrido.push(idOrigen)
+        //     nodo.paquete = paquete
+        //     this.renderTable(paquete.contenido, idOrigen, paquete.recorrido)
+        //     this.enviarPaquete(idOrigen, idDestino)
+        //     await sleep(delayEntrada)
+        // }
     }
     async enviarPaquete(idOrigen, idDestino) {
-        let idNodoActual = this.grafo.enviarVecino(idOrigen, idDestino)
-        console.log(idNodoActual)
-        if (idNodoActual != idDestino && idNodoActual) {
-            await sleep(delayEnvio)
-            let nodo = this.grafo.obtenerNodo(idNodoActual)
-            console.log(`idNodoActual : ${JSON.stringify(nodo, null, 2)}`)
-            this.renderTable(nodo.paquete.contenido, idNodoActual, nodo.paquete.recorrido)
-            return this.enviarPaquete(idNodoActual, idDestino)
-        } else {
-            let nodo = this.grafo.obtenerNodo(idNodoActual)
-            this.renderTable(nodo.paquete.contenido, idNodoActual, nodo.paquete.recorrido)
+        let nodoActual = this.grafo.obtenerNodo(idOrigen)
+        console.log(`nodo actual : ${JSON.stringify(nodoActual,null,2)}`)
+        if (idOrigen != idDestino && idOrigen) {
+            while (true) {
+                console.log(`funcion dividirPaquete: ${JSON.stringify(nodoActual.queue, null, 2)}`)
+                if (nodoActual.queue.length > 0) {
+                    await sleep(delayEnvio)
+                    nodoActual.dequeue()
+                    this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
+                    this.enviarPaquete(this.grafo.enviarVecino(idOrigen, idDestino), idDestino)
+                }else{
+                    break
+                }
+            }
+        }else{
+            this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
         }
     }
 }

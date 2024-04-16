@@ -90,7 +90,7 @@ export default class Grafo {
             origen.paquete.recorrido.push(vecino)
             origen.paquete.costo = costoMinimo
             vecino = this.obtenerNodo(vecino)
-            vecino.paquete = origen.paquete
+            vecino.enqueue(origen.paquete)
             origen.paquete = {}
             return vecino.id
         }

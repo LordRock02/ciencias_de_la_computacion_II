@@ -8,6 +8,7 @@ export default class Nodo {
         this._vecinos = _vecinos
         this._tipo = tipos[_tipo]
         this._paquete = _paquete
+        this._queue = []
     }
 
     get id() {
@@ -40,6 +41,22 @@ export default class Nodo {
 
     set paquete(_paquete) {
         this._paquete = _paquete
+    }
+
+    get queue() {
+        return this._queue
+    }
+
+    set queue(_queue){
+        this._queue = _queue
+    }
+
+    enqueue(_paquete){
+        this._queue.push(_paquete)
+    }
+
+    dequeue(){
+        this.paquete = this.queue.shift()
     }
 
     agregarVecino(idVecino, peso) {
