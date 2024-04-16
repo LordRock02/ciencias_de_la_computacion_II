@@ -2,7 +2,7 @@ import Grafo from "../models/grafo.js";
 import View from "../views/view.js";
 import { dibujaGrafo } from "./dibujaGrafo.js";
 
-const limitePaquete = 3
+const limitePaquete = 1
 const delayEntrada = 1500
 const delayEnvio = 2000
 let contador = 0
@@ -14,10 +14,8 @@ const sleep = (ms) => {
 const dividirPaquete = (mensaje) => {
     let paquetes = []
     if (mensaje instanceof Array) {
-        if (mensaje.length >= limitePaquete) {
-            for (let i = 0, index = 0; i < mensaje.length; i += limitePaquete, index++) {
-                paquetes.push({ 'index': index, 'contenido': mensaje.slice(i, i + limitePaquete), 'recorrido': [], 'costo': 0 })
-            }
+        for (let i = 0, index = 0; i < mensaje.length; i += limitePaquete, index++) {
+            paquetes.push({ 'index': index, 'contenido': mensaje.slice(i, i + limitePaquete), 'recorrido': [], 'costo': 0 })
         }
         console.log(`funcion dividirPaquete: ${JSON.stringify(paquetes, null, 2)}`)
         return paquetes
@@ -67,8 +65,8 @@ export default class Controller {
         let idDestino = 9
         let paquetes = dividirPaquete(this.view.inputMessage.value.split(''))
         for (let paquete of paquetes) {
-            paquete.recorrido.push(idOrigen)
             let nodo = this.grafo.obtenerNodo(idOrigen)
+            paquete.recorrido.push(idOrigen)
             nodo.paquete = paquete
             this.renderTable(paquete.contenido, idOrigen, paquete.recorrido)
             this.enviarPaquete(idOrigen, idDestino)
@@ -88,16 +86,5 @@ export default class Controller {
             let nodo = this.grafo.obtenerNodo(idNodoActual)
             this.renderTable(nodo.paquete.contenido, idNodoActual, nodo.paquete.recorrido)
         }
-        // let paquetes = dividirPaquete(this.view.inputMessage.value.split(''))
-        // let idOrigen = 1
-        // let idDestino = 9
-        // for (let paquete of paquetes) {
-        //     paquete.recorrido.push(idOrigen)
-        // }
-        // this.grafo.obtenerNodo(idOrigen).paquete = paquetes[0]
-        // console.log(this.grafo.enviarVecino(idOrigen, idDestino))
-        // console.log(this.grafo.obtenerNodo(idDestino).paquete)
-        // console.log(paquetes)
-
     }
 }
