@@ -87,6 +87,7 @@ export default class Grafo {
             if (vecino == idDestino) {
                 console.log('se termino')
             }
+            
             origen.paquete.recorrido.push(vecino)
             origen.paquete.costo = costoMinimo
             vecino = this.obtenerNodo(vecino)

@@ -49,11 +49,11 @@ export default class Controller {
         this.renderGrafo()
         this.setOpciones()
     }
-    setOpciones(){
+    setOpciones() {
         let opciones = []
-        for(let nodo of this.grafo.nodos){
-            if(nodo instanceof Nodo){
-                if(nodo.tipo == 1){
+        for (let nodo of this.grafo.nodos) {
+            if (nodo instanceof Nodo) {
+                if (nodo.tipo == 1) {
                     opciones.push(nodo.id)
                 }
             }
@@ -84,7 +84,7 @@ export default class Controller {
             this.view.canvasGrafo.getContext('2d').clearRect(0, 0, this.view.canvasGrafo.width, this.view.canvasGrafo.height)
             this.grafo.actualizarAristas()
             dibujaGrafo(this.view.canvasGrafo, this.grafo)
-            await sleep(ciclo*1000)
+            await sleep(ciclo * 1000)
         }
     }
     async enviarMensaje() {
@@ -96,18 +96,18 @@ export default class Controller {
         this.enviarPaquete(idOrigen, idDestino)
     }
     async enviarPaquete(idOrigen, idDestino) {
-        let nodoActual = this.grafo.obtenerNodo(idOrigen)
+        console.log(idOrigen)
+        let nodoActual = Object.assign(this.grafo.obtenerNodo(idOrigen))
         if (idOrigen != idDestino && idOrigen) {
             while (true) {
                 if (nodoActual.queue.length > 0) {
-                    await sleep((Math.floor(Math.random() * (delayEnvio - 5)) + 5)*1000)
+                    await sleep((Math.floor(Math.random() * (delayEnvio - 5)) + 5) * 1000)
                     nodoActual.dequeue()
-                    console.log(nodoActual)
-                    if (nodoActual.paquete != {}) {
-                        this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
-                        await sleep((Math.floor(Math.random() * (delayProceso - 3)) + 3)*1000)
-                        this.enviarPaquete(this.grafo.enviarVecino(idOrigen, idDestino), idDestino)
-                    }
+                    let proximo = await this.grafo.enviarVecino(idOrigen, idDestino)
+                    console.log(`id : ${nodoActual.id}, paquete : ${JSON.stringify(nodoActual.paquete, null, 2)}`)
+                    this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
+                    await sleep((Math.floor(Math.random() * (delayProceso - 3)) + 3) * 1000)
+                    this.enviarPaquete(proximo, idDestino)
                 } else {
                     break
                 }

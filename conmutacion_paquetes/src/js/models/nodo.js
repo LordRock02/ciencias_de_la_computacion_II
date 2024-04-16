@@ -57,6 +57,10 @@ export default class Nodo {
 
     dequeue(){
         this.paquete = this.queue.shift()
+        console.log(JSON.stringify(this._queue, null, 2))
+        if(this.paquete == undefined){
+            this.paquete = {}
+        }
     }
 
     agregarVecino(idVecino, peso) {
