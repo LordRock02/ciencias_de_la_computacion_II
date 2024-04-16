@@ -78,7 +78,7 @@ export default class Grafo {
                 if (costoMinimo > costo || vecinoId == idDestino) {
                     costoMinimo = costo
                     vecino = vecinoId
-                    console.log(`vecino ${vecino}`)
+                    //console.log(`vecino ${vecino}`)
                     if(vecinoId == idDestino){
                         break
                     }
@@ -90,7 +90,7 @@ export default class Grafo {
             origen.paquete.recorrido.push(vecino)
             origen.paquete.costo = costoMinimo
             vecino = this.obtenerNodo(vecino)
-            vecino.enqueue(origen.paquete)
+            vecino.enqueue(Object.assign(origen.paquete))
             origen.paquete = {}
             return vecino.id
         }

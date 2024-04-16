@@ -1,10 +1,13 @@
 import Grafo from "../models/grafo.js";
+import Nodo from "../models/nodo.js";
 import View from "../views/view.js";
 import { dibujaGrafo } from "./dibujaGrafo.js";
+//import {enviarPaquete} from '../utils/enviarPaqueteWorker.js'
 
 const limitePaquete = 3
-const delayEntrada = 1500
-const delayEnvio = 2000
+const delayProceso = 1
+const delayEnvio = 2
+const ciclo = 2
 let contador = 0
 
 const sleep = (ms) => {
@@ -17,7 +20,6 @@ const dividirPaquete = (mensaje) => {
         for (let i = 0, index = 0; i < mensaje.length; i += limitePaquete, index++) {
             paquetes.push({ 'index': index, 'contenido': mensaje.slice(i, i + limitePaquete), 'recorrido': [], 'costo': 0 })
         }
-        //console.log(`funcion dividirPaquete: ${JSON.stringify(paquetes, null, 2)}`)
         return paquetes
     }
     return null
@@ -33,6 +35,7 @@ const createRow = (counter, message, idNodo, recorrido) => {
     return (newRow)
 }
 
+
 export default class Controller {
     constructor(grafo, view) {
         if (grafo instanceof Grafo) {
@@ -42,13 +45,38 @@ export default class Controller {
             this.view = view
         }
         this.view.bindSendMessage(this.enviarMensaje.bind(this))
+        this.view.bindClearTable(this.clearTable.bind(this))
         this.renderGrafo()
+        this.setOpciones()
     }
-    handleTable() {
-        this.renderTable()
+    setOpciones(){
+        let opciones = []
+        for(let nodo of this.grafo.nodos){
+            if(nodo instanceof Nodo){
+                if(nodo.tipo == 1){
+                    opciones.push(nodo.id)
+                }
+            }
+        }
+        opciones.forEach(idNodo => {
+            let opcion = document.createElement('option')
+            opcion.text = `Nodo ${idNodo}`
+            opcion.value = idNodo
+            this.view.selectDestino.appendChild(opcion)
+
+        })
+        opciones.forEach(idNodo => {
+            let opcion = document.createElement('option')
+            opcion.text = `Nodo ${idNodo}`
+            opcion.value = idNodo
+            this.view.selectOrigen.appendChild(opcion)
+
+        })
+    }
+    clearTable() {
+        this.view.table.innerHTML = ''
     }
     async renderTable(message, idNodo, recorrido) {
-        //console.log(`mensaje : ${message}`)
         this.view.updateTable(createRow(++contador, message, idNodo, recorrido))
     }
     async renderGrafo() {
@@ -56,43 +84,36 @@ export default class Controller {
             this.view.canvasGrafo.getContext('2d').clearRect(0, 0, this.view.canvasGrafo.width, this.view.canvasGrafo.height)
             this.grafo.actualizarAristas()
             dibujaGrafo(this.view.canvasGrafo, this.grafo)
-            //console.log(this.grafo)
-            await sleep(2000)
+            await sleep(ciclo*1000)
         }
     }
     async enviarMensaje() {
-        console.log('enviar mensaje')
-        let idOrigen = 1
-        let idDestino = 9
+        let idOrigen = this.view.selectOrigen.value
+        let idDestino = this.view.selectDestino.value
         let nodo = this.grafo.obtenerNodo(idOrigen)
         nodo.queue = dividirPaquete(this.view.inputMessage.value.split(''))
+        nodo.queue.forEach(element => element.recorrido.push(idOrigen))
         this.enviarPaquete(idOrigen, idDestino)
-        // let paquetes = dividirPaquete(this.view.inputMessage.value.split(''))
-        // for (let paquete of paquetes) {
-        //     let nodo = this.grafo.obtenerNodo(idOrigen)
-        //     paquete.recorrido.push(idOrigen)
-        //     nodo.paquete = paquete
-        //     this.renderTable(paquete.contenido, idOrigen, paquete.recorrido)
-        //     this.enviarPaquete(idOrigen, idDestino)
-        //     await sleep(delayEntrada)
-        // }
     }
     async enviarPaquete(idOrigen, idDestino) {
         let nodoActual = this.grafo.obtenerNodo(idOrigen)
-        console.log(`nodo actual : ${JSON.stringify(nodoActual,null,2)}`)
         if (idOrigen != idDestino && idOrigen) {
             while (true) {
-                console.log(`funcion dividirPaquete: ${JSON.stringify(nodoActual.queue, null, 2)}`)
                 if (nodoActual.queue.length > 0) {
-                    await sleep(delayEnvio)
+                    await sleep((Math.floor(Math.random() * (delayEnvio - 5)) + 5)*1000)
                     nodoActual.dequeue()
-                    this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
-                    this.enviarPaquete(this.grafo.enviarVecino(idOrigen, idDestino), idDestino)
-                }else{
+                    console.log(nodoActual)
+                    if (nodoActual.paquete != {}) {
+                        this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
+                        await sleep((Math.floor(Math.random() * (delayProceso - 3)) + 3)*1000)
+                        this.enviarPaquete(this.grafo.enviarVecino(idOrigen, idDestino), idDestino)
+                    }
+                } else {
                     break
                 }
             }
-        }else{
+        } else {
+            nodoActual.dequeue()
             this.renderTable(nodoActual.paquete.contenido, nodoActual.id, nodoActual.paquete.recorrido)
         }
     }
