@@ -1,0 +1,41 @@
+* {
+  --ancho-div1: 500px;
+  --ancho-div2: calc(100% - var(--ancho-div1));
+}
+body {
+  display: flex;
+  margin: 0;
+}
+body :nth-child(1) {
+  display: inherit;
+  background-color: brown;
+  width: var(--ancho-div1);
+  height: 100vh;
+}
+body :nth-child(2) {
+  display: inherit;
+  flex-direction: column;
+  background-color: #fff;
+  gap: 50px;
+  width: var(--ancho-div2);
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+body :nth-child(2) h1{
+  color: black;
+  height: fit-content;
+  width: fit-content;
+  margin: 0;
+}
+
+#grafo {
+  width: 600px;
+  height: 600px;
+  background-color: #e6e6e6;
+  border-radius: 50px;
+  -webkit-box-shadow: 0 0 10px 8.5px #c4c2c2;
+  -moz-box-shadow: 0 0 10px 8.5px #c4c2c2;
+  box-shadow: 0 0 10px 8.5px #c4c2c2;
+}
