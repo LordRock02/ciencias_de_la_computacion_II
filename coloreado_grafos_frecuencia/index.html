@@ -6,14 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
     <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://kit.fontawesome.com/54f3cb5570.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="menu">
-
-    </div>
-    <div>
+    <div id="containerGrafo">
       <canvas id="grafo" width="1000" height="1000"></canvas>
       <h1 id="resultado">hola</h1>
+      <div id="containerBtns">
+        <button id="disminuir"><i class="fa-solid fa-minus fa-lg"></i></button>
+        <h1 id="cantidad">6</h1>
+        <button id="aumentar"><i class="fa-solid fa-plus fa-lg"></i></button>
+      </div>
+    </div>
+    <div id="containerTabla">
+      <div id="data">
+        <table id="tabla">
+          <thead>
+            <th>0</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+              <td>6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <script type="module" src="./src/js/main/main.js"></script>
   </body>

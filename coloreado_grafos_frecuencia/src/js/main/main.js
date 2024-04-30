@@ -1,6 +1,8 @@
 import Grafo from "../models/grafo";
 import Nodo from "../models/nodo";
 import { dibujaGrafo } from "../controllers/dibujaGrafo";
+import View from "../views/view";
+import Controller from "../controllers/controller";
 
 const nodos = [
   new Nodo(1),
@@ -12,14 +14,18 @@ const nodos = [
 ]
 
 const grafo = new Grafo(nodos)
+const view = new View() 
+
 grafo.agregarVecinosNodo(1, { 2: 85, 3: 175, 4: 200, 5: 50, 6: 100 })
 grafo.agregarVecinosNodo(2, { 3: 125, 4: 175, 5: 100, 6: 160 })
 grafo.agregarVecinosNodo(3, { 4: 100, 5: 200, 6: 250 })
 grafo.agregarVecinosNodo(4, { 5: 210, 6: 220 })
 grafo.agregarVecinosNodo(5, { 6: 100 })
 
+const controller = new Controller(grafo, view)
 
+//controller.renderGrafo()
 console.log(`cantidad de colores necesarios: ${grafo.coloreadoGrafo()}`)
 console.log(grafo)
-dibujaGrafo(document.getElementById('grafo'), grafo)
+//dibujaGrafo(document.getElementById('grafo'), grafo)
 document.getElementById('resultado').innerText = `numero de colores necesarios: ${grafo.coloreadoGrafo()}`

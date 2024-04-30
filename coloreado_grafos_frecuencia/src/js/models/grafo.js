@@ -1,7 +1,9 @@
 import Nodo from "./nodo.js"
 export default class Grafo {
     constructor(_nodos = []) {
-        this._nodos = _nodos
+        if (_nodos instanceof Array) {
+            this._nodos = _nodos
+        }
     }
 
     get nodos() {
@@ -10,6 +12,34 @@ export default class Grafo {
 
     set nodos(_nodos) {
         this._nodos = _nodos
+    }
+
+    get orden() {
+        return this._nodos.length
+    }
+
+    crearNodo() {
+        const nodo = new Nodo(this._nodos[this._nodos.length - 1].id + 1)
+        this._nodos.forEach(vecino => {
+            const frecuencia = Math.floor(Math.random() * (300 - 50)) + 50
+            nodo.agregarVecino(vecino.id, frecuencia)
+            this.obtenerNodo(vecino.id).agregarVecino(nodo.id, frecuencia)
+        })
+        this._nodos.push(nodo)
+    }
+
+    eliminarNodo(id) {
+        this._nodos.forEach(nodo => delete nodo.vecinos[id])
+        const nodo = this.obtenerNodo(id)
+        if (nodo != null) {
+            this._nodos.splice(this._nodos.indexOf(nodo))
+        }
+    }
+
+    listaIdNodos() {
+        let nodos = []
+        this._nodos.forEach(nodo => nodos.push(nodo.id))
+        return nodos
     }
 
     obtenerNodo(idNodo) {
@@ -64,52 +94,21 @@ export default class Grafo {
             }
         }
     }
-
-    enviarVecino(idOrigen, idDestino) {
-        if (idOrigen != idDestino) {
-            let origen = this.obtenerNodo(idOrigen)
-            let vecino = null
-            let costoMinimo = Infinity
-            let costoAcumulado = 0
-            costoAcumulado = origen.paquete.costo
-            for (let vecinoId in origen.vecinos) {
-                let costo = costoAcumulado + (1 / origen.vecinos[vecinoId])
-                if (costoMinimo > costo || vecinoId == idDestino) {
-                    costoMinimo = costo
-                    vecino = vecinoId
-                    //console.log(`vecino ${vecino}`)
-                    if(vecinoId == idDestino){
-                        break
-                    }
-                }
-            }
-            if (vecino == idDestino) {
-                console.log('se termino')
-            }
-            
-            origen.paquete.recorrido.push(vecino)
-            origen.paquete.costo = costoMinimo
-            vecino = this.obtenerNodo(vecino)
-            vecino.enqueue(Object.assign(origen.paquete))
-            origen.paquete = {}
-            return vecino.id
-        }
-        return null
-    }
     // devulevue numero de coloreado del grafo
-    coloreadoGrafo(){
+    coloreadoGrafo() {
+        this._nodos.forEach(nodo => nodo.color = null)
         let numColores = 1
-        for(let nodo of this._nodos){
+        for (let nodo of this._nodos) {
             let color = 0
-            if(nodo instanceof Nodo){
-                for(let vecinoId in nodo.vecinos){
-                    if(nodo.vecinos[vecinoId]< 150){
+            if (nodo instanceof Nodo) {
+                for (let vecinoId in nodo.vecinos) {
+                    if (nodo.vecinos[vecinoId] < 150) {
                         let vecino = this.obtenerNodo(vecinoId)
-                        if(vecino.color == color){
+                        if (vecino.color == color) {
                             color++
                         }
-                        if(color+1>numColores){
-                            numColores = color+1
+                        if (color + 1 > numColores) {
+                            numColores = color + 1
                         }
                     }
                 }
