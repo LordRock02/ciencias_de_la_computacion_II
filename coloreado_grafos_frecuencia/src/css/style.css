@@ -81,9 +81,19 @@ th, td{
   -webkit-box-shadow: 0 0 10px 8.5px #c4c2c2;
   -moz-box-shadow: 0 0 10px 8.5px #c4c2c2;
   box-shadow: 0 0 10px 8.5px #c4c2c2;
+  transition: 0.5s;
 }
 
 button :hover{
   background-color: #6E12F3;
   color: white;
+}
+.aristaInput{
+  font-size: 0.8em;
+  color: #333;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 38px;
 }

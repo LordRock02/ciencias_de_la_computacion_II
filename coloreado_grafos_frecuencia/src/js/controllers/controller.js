@@ -17,13 +17,15 @@ const tableHead = (nodos) => {
 
 const tableBody = (nodos) => {
     let body = document.createElement('tbody')
+    const aristasVisitadas = []
     nodos.forEach(nodo=>{
         if(nodo instanceof Nodo){
             let row = document.createElement('tr')
             row.innerHTML += `<td>${nodo.id}</td>`
             for (let i = 1; i <= nodo.grado + 1; i++){
-                if(nodo.vecinos[i] != undefined){
-                    row.innerHTML += `<td>${nodo.vecinos[i]}</td>`
+                if(nodo.vecinos[i] != undefined && !aristasVisitadas.some(arr => arr[0] === i && arr[1] === nodo.id)){
+                    row.innerHTML += `<td><input id='${nodo.id}-${i}' value=${nodo.vecinos[i]} class='aristaInput'></td>`
+                    aristasVisitadas.push([nodo.id, i])
                 }else{
                     row.innerHTML += `<td/>`
                 }
@@ -44,9 +46,10 @@ export default class Controller {
         if (view instanceof View) {
             this.view = view
         }
+        this.renderGrafo()
         this.view.bindAumentarBtn(this.aumentarNodos.bind(this))
         this.view.bindDisminuirBtn(this.disminuirNodos.bind(this))
-        this.renderGrafo()
+        this.view.bindAristaInputs(this.actualizarNodos.bind(this))
     }
 
     aumentarNodos() {
@@ -57,11 +60,17 @@ export default class Controller {
     }
     disminuirNodos() {
         const cantidad = parseInt(this.view.cantidad.innerText)
-        if (cantidad >= 7) {
+        if (cantidad >= 1) {
             this.view.cantidad.innerText = cantidad - 1
             this.grafo.eliminarNodo(this.grafo.nodos[this.grafo.nodos.length - 1].id)
             this.renderGrafo()
         }
+    }
+
+    actualizarNodos(id, value){
+        const nodos = id.split('-')
+        this.grafo.setPesoArista(nodos[0], nodos[1], value)
+        this.renderGrafo()
     }
 
     renderGrafo() {
@@ -71,5 +80,8 @@ export default class Controller {
         dibujaGrafo(this.view.canvasGrafo, this.grafo)
         this.view.resultado.innerText = `numero cromatico: ${numCromatico}`
         this.view.updateTable(tableHead(this.grafo.listaIdNodos()), tableBody(this.grafo._nodos))
+        //delete this.view
+        this.view = new View()
+        this.view.bindAristaInputs(this.actualizarNodos.bind(this))
     }
 }

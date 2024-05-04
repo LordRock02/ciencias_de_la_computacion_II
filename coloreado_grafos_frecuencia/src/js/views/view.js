@@ -6,13 +6,30 @@ export default class View {
         this.disminuirBtn = document.getElementById('disminuir')
         this.canvasGrafo = document.getElementById('grafo')
         this.tabla = document.getElementById('tabla')
+        this.aristaInputs = document.querySelectorAll('.aristaInput')
     }
-    bindAumentarBtn(handler){
+    bindAumentarBtn(handler) {
         this.aumentarBtn.addEventListener('click', handler)
     }
-    bindDisminuirBtn(handler){
+    bindDisminuirBtn(handler) {
         this.disminuirBtn.addEventListener('click', handler)
-    }    
+    }
+    bindAristaInputs(handler) {
+        const agregarEventListener = (input) => {
+            input.addEventListener('change', () => {
+              handler(input.id, input.value)
+            })
+          }
+        
+          this.aristaInputs = document.querySelectorAll('.aristaInput');
+          this.aristaInputs.forEach(agregarEventListener)
+        
+        //   document.addEventListener('change', (event) => {
+        //     if (event.target && event.target.classList.contains('aristaInput')) {
+        //       agregarEventListener(event.target)
+        //     }
+        //   })
+    }
     updateTable(head, body) {
         this.tabla.innerHTML = ``
         this.tabla.appendChild(head)

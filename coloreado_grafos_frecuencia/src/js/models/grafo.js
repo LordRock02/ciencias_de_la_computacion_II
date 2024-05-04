@@ -28,6 +28,12 @@ export default class Grafo {
         this._nodos.push(nodo)
     }
 
+    setPesoArista(idNodo1, idNodo2, peso) {
+        const nodo1 = this.obtenerNodo(idNodo1)
+        const nodo2 = this.obtenerNodo(idNodo2)
+        nodo1.vecinos[nodo2.id] = peso
+        nodo2.vecinos[nodo1.id] = peso
+    }
     eliminarNodo(id) {
         this._nodos.forEach(nodo => delete nodo.vecinos[id])
         const nodo = this.obtenerNodo(id)
